@@ -1,0 +1,41 @@
+﻿@model Catalog
+@if (Model != null)
+{
+    <h1>@Model.CatalogName</h1>
+}
+<form asp-controller="Catalog" asp-action="ImportFoldersFromFile" method="post">
+    <div class="form-group">
+        <label for="exportPath">Import Path (specify an existing txt file to read from):</label>
+        <input type="text" id="exportPath" name="importPath" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Import Folders</button>
+    @TempData["ImportMessage"]
+</form>
+<form asp-controller="Catalog" asp-action="ExportFoldersToFile" method="post">
+    <div class="form-group">
+        <label for="exportPath">Export Path (specify an existing txt file to write to):</label>
+        <input type="text" id="exportPath" name="exportPath" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Export Folders</button>
+    @TempData["ExportMessage"]
+</form>
+<ul>
+    @if (Model != null)
+    {
+        @foreach (var childCatalog in Model.ChildCatalogs)
+        {
+            <li>
+                <a asp-controller="Catalog" asp-action="Index" asp-route-id="@childCatalog.CatalogId">
+                    @childCatalog.CatalogName
+                </a>
+
+            </li>
+        }
+
+    }
+</ul>
+    @if (Model == null){
+        <h2>No catalogues</h2>
+    }
